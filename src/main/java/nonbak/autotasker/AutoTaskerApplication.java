@@ -8,6 +8,9 @@ public class AutoTaskerApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(AutoTaskerApplication.class, args);
+
+
+
     }
 
 }
