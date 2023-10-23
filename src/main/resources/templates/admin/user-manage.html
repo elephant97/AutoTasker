@@ -18,19 +18,42 @@
     <table class="table table-hover">
         <thead>
         <tr>
+            <th>아이디</th>
             <th>이 름</th>
-            <th>부 서</th>
             <th>이메일</th>
+            <th>부 서</th>
+            <th>승인 여부</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${UserListModel}">
+        <tr th:each="user : ${userList.content}">
+            <td th:text="${user.userId}"></td>
             <td th:text="${user.userName}"></td>
-            <td th:text="${user.department}"></td>
             <td th:text="${user.userEmail}"></td>
+            <td th:text="${user.department}"></td>
+            <td th:style="${user.status == 'N'} ? 'color: red;' : 'color: green;'">
+                <span th:text="${user.status}"></span>
+            </td>
         </tr>
         </tbody>
     </table>
+
+    <ul class="pagination">
+        <li th:if="${userList.hasPrevious()}">
+            <a th:href="@{'/admin?page=' + ${userList.previousPageable.pageNumber}}">이전</a>
+        </li>
+        <li th:each="page : ${userList.pageable.pageNumbers}">
+            <a th:if="${page == userList.number}" th:text="${page + 1}"></a>
+            <a th:unless="${page == userList.number}" th:href="@{'/admin?page=' + ${page}}" th:text="${page + 1}"></a>
+        </li>
+        <li th:if="${userList.hasNext()}">
+            <a th:href="@{'/admin?page=' + ${userList.nextPageable.pageNumber}}">다음</a>
+        </li>
+    </ul>
+
+
+
+
 </div>
 </body>
 </html>
