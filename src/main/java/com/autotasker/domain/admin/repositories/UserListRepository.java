@@ -1,10 +1,12 @@
 package com.autotasker.domain.admin.repositories;
 
-import com.autotasker.domain.admin.model.Users;
-import org.springframework.data.jpa.repository.JpaRepository;
+import com.autotasker.domain.admin.model.UserList;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.repository.CrudRepository;
 
-import java.util.List;
 
-public interface UserListRepository extends JpaRepository<Users, Long> {
-    List<Users> findAll();
+//page로 구현하기 위해 CrudRepository사용, Pageable사용
+public interface UserListRepository extends CrudRepository<UserList, Long> {
+    Page<UserList> findAll(Pageable pageable);
 }
