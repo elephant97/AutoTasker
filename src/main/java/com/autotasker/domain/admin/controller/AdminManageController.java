@@ -24,4 +24,10 @@ public class AdminManageController {
         return "admin/admin-main";
     }
 
+    @GetMapping(value ="/admin/UserJoin")
+    public String AdminRequestUserJoin(Model model)
+    {
+        return "admin/UserJoin";
+    }
+
 }
