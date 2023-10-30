@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -26,7 +27,8 @@ public class AdminManageController {
     public String AdminGetUserList(@RequestParam(name = "page", defaultValue = "0") int page, Model model)
     {
         int pageSize = 5; // 한 페이지에 표시할 항목 수
-        Pageable pageable = PageRequest.of(page, pageSize);
+        //status가 N인 항목 먼저 출력 되도록 함
+        Pageable pageable = PageRequest.of(page, pageSize, Sort.by(Sort.Direction.ASC, "status"));
         Page<UserListDTO> usersPage = userListRepository.findAll(pageable);
 
         model.addAttribute("userList", usersPage);
@@ -35,8 +37,10 @@ public class AdminManageController {
 
     @PostMapping("/approve-user")
     public ResponseEntity<String> approveUser(@RequestParam("userNo") Long userNo)
+//    public String approveUser(@RequestParam("userNo") Long userNo)
     {
         ResponseEntity<String> response = userManageService.approveUser(userNo);
+//        return "redirect:/admin";
         return response;
     }
 
@@ -44,13 +48,14 @@ public class AdminManageController {
     public ResponseEntity<String> deleteUser(@RequestParam("userNo") Long userNo)
     {
         ResponseEntity<String> response = userManageService.deleteUser(userNo);
+//        return "redirect:/";
         return response;
     }
 
-    @GetMapping(value ="/UserJoin")
+    @GetMapping(value ="/user-join")
     public String AdminRequestUserJoin(Model model)
     {
-        return "admin/UserJoin";
+        return "admin/user-join";
     }
 
 }

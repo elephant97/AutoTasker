@@ -25,7 +25,7 @@ public class UserManageService {
             UserListDTO userList = user.get();
             userList.setStatus("Y"); // 승인되었을 때 'status' 값을 "Y"로 설정
             userListRepository.save(userList); // 데이터베이스 업데이트
-            return ResponseEntity.ok("사용자 승인이 성공했습니다.");
+            return ResponseEntity.ok("사용자 승인을 성공했습니다.");
         } else {
             return ResponseEntity.status(HttpStatus.NOT_FOUND).body("사용자를 찾을 수 없습니다.");
         }
