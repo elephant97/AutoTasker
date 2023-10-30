@@ -1,6 +1,6 @@
 package com.autotasker.domain.admin.controller;
 
-import com.autotasker.domain.admin.model.UserList;
+import com.autotasker.domain.admin.model.DTO.UserListDTO;
 import com.autotasker.domain.admin.repositories.UserListRepository;
 import com.autotasker.domain.admin.service.UserManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +27,7 @@ public class AdminManageController {
     {
         int pageSize = 5; // 한 페이지에 표시할 항목 수
         Pageable pageable = PageRequest.of(page, pageSize);
-        Page<UserList> usersPage = userListRepository.findAll(pageable);
+        Page<UserListDTO> usersPage = userListRepository.findAll(pageable);
 
         model.addAttribute("userList", usersPage);
         return "admin/user-manage";

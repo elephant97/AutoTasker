@@ -1,12 +1,10 @@
-package com.autotasker.domain.admin.model;
+package com.autotasker.domain.admin.model.DTO;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
 @Entity
-public class UserList {
+@Table(name="user_list")
+public class UserListDTO {
     /**
      * [UserList Table 데이터 조회 클래스]
      * */
