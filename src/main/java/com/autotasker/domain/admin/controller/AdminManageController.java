@@ -2,15 +2,15 @@ package com.autotasker.domain.admin.controller;
 
 import com.autotasker.domain.admin.model.UserList;
 import com.autotasker.domain.admin.repositories.UserListRepository;
+import com.autotasker.domain.admin.service.UserManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 //@RequestMapping //TODO admin User일 경우 admin 페이지 버튼이 활성화 되고, 해당 페이지로 매핑되도록 변경예정
 @RequestMapping("/admin")
@@ -19,6 +19,8 @@ public class AdminManageController {
     //TODO user 정보 List가 출력되도록 해당 서비스 구현예정
     @Autowired
     UserListRepository userListRepository;
+    @Autowired
+    private UserManageService userManageService;
 
     @GetMapping
     public String AdminGetUserList(@RequestParam(name = "page", defaultValue = "0") int page, Model model)
@@ -29,6 +31,20 @@ public class AdminManageController {
 
         model.addAttribute("userList", usersPage);
         return "admin/user-manage";
+    }
+
+    @PostMapping("/approve-user")
+    public ResponseEntity<String> approveUser(@RequestParam("userNo") Long userNo)
+    {
+        ResponseEntity<String> response = userManageService.approveUser(userNo);
+        return response;
+    }
+
+    @PostMapping("/delete-user")
+    public ResponseEntity<String> deleteUser(@RequestParam("userNo") Long userNo)
+    {
+        ResponseEntity<String> response = userManageService.deleteUser(userNo);
+        return response;
     }
 
     @GetMapping(value ="/UserJoin")

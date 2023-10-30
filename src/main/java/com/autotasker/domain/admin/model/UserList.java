@@ -52,4 +52,37 @@ public class UserList {
     public String getStatus() {
         return status;
     }
+
+
+    public void setUserNo(Long userNo) {
+        this.userNo = userNo;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setSvnId(String svnId) {
+        this.svnId = svnId;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
 }
