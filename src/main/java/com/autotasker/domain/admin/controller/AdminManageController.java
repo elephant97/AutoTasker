@@ -1,8 +1,10 @@
 package com.autotasker.domain.admin.controller;
 
+import com.autotasker.domain.admin.model.DTO.Form.UserListRequestFromDTO;
 import com.autotasker.domain.admin.model.DTO.UserListDTO;
 import com.autotasker.domain.admin.repositories.UserListRepository;
 import com.autotasker.domain.admin.service.UserManageService;
+import jakarta.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -11,6 +13,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 //@RequestMapping //TODO admin User일 경우 admin 페이지 버튼이 활성화 되고, 해당 페이지로 매핑되도록 변경예정
@@ -56,6 +59,22 @@ public class AdminManageController {
     public String editUser(@RequestParam("userNo") Long userNo, Model model)
     {
         return "admin/edit-user";
+    }
+
+    @PostMapping("edit-user")
+    public String EditUserData(@Valid @ModelAttribute("userListRequestFromDTO") UserListRequestFromDTO userListRequestFromDTO, BindingResult bindingResult, Model model)
+    {
+        if(bindingResult.hasErrors()){
+            return "join/join-form";
+        }
+        try {
+            UserJoinRequestDto userJoinRequestDto = UserJoinRequestDto.userJoinApply(userJoinRequestFormDto, passwordEncoder);
+            userJoinService.saveJoinStay(userJoinRequestDto);
+        }catch (IllegalStateException e){
+            model.addAttribute("errorMessage", e.getMessage());
+            return "join/join-form";
+        }
+        return "redirect:/admin";
     }
 
     @GetMapping(value ="/user-join")

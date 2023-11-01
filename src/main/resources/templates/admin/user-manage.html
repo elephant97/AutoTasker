@@ -24,18 +24,20 @@
             <th>아이디</th>
             <th>이 름</th>
             <th>이메일</th>
+            <th>SVN ID</th>
             <th>부 서</th>
             <th>승인 여부</th>
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${userList}" data-users="[(${user})]" data-toggle="modal" data-target="#myModal">
+        <tr th:each="user : ${userList}" data-toggle="modal" data-target="#userEditModal">
             <td th:text="${user.userId}" ></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.userEmail}"></td>
+            <td th:text="${user.svnId}"></td>
             <td th:text="${user.department}"></td>
             <td th:style="${user.status == 'N'} ? 'color: red;' : 'color: green;'">
-                <span th:text="${user.status}" data-users="[(${user})]" data-toggle="modal" data-target="#myModal"></span>
+                <span th:text="${user.status}"></span>
             </td>
             <!-- 승인 상태가 "N"인 경우에만 승인 버튼을 추가합니다 -->
             <td th:if="${user.status == 'N'}">
@@ -75,25 +77,27 @@
         </ul>
     </nav>
 
-    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+    <div class="modal fade" id="userEditModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
         <div class="modal-dialog" role="document">
             <div class="modal-content" >
                 <div class="modal-body" style="text-align:center">
-                    <div class="table_area" style="height: 300px; margin-top: 10px; width: 300px;">
-                        <label for="userId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 11px; margin-right: 5px;'>ID</label>
-                        <input type="text"  	id = "userId" disabled  style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
-                        <label for="userPwd" class="input_label" style='display:inline-block; width:100px; text-align:right;margin-right: 5px;'>password</label>
-                        <input type="text"  	id = "userPwd" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
-                        <label for="userEmail" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>E-Mail</label>
-                        <input type="text"  	id = "userEmail" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
-                        <label for="department" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-right: 5px;'>부서</label>
-                        <input type="text"  	id = "department" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
-                        <label for="svnId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>SVN ID</label>
-                        <input type="text"  	id = "svnId" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
-                        <div class="button-container" style="display: block; margin:auto; text-align:center;">
-                            <button class="save-button" style="background-color: dodgerblue; ">save</button>
+                    <form th:action="edit-user">
+                        <div class="table_area" style="height: 300px; margin-top: 10px; width: 300px;">
+                            <label for="userId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 11px; margin-right: 5px;'>ID</label>
+                            <input type="text"  	id = "userId" disabled  style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                            <label for="userPwd" class="input_label" style='display:inline-block; width:100px; text-align:right;margin-right: 5px;'>password</label>
+                            <input type="text"  	id = "userPwd" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                            <label for="userEmail" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>E-Mail</label>
+                            <input type="text"  	id = "userEmail" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                            <label for="department" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-right: 5px;'>부서</label>
+                            <input type="text"  	id = "department" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                            <label for="svnId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>SVN ID</label>
+                            <input type="text"  	id = "svnId" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                            <div class="button-container" style="display: block; margin:auto; text-align:center;">
+                                <button class="save-button" style="background-color: dodgerblue;" type="submit">save</button>
+                            </div>
                         </div>
-                    </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -122,20 +126,23 @@
         }
 
         // 모달 열기
-        document.querySelectorAll('.open-modal-button').forEach(function(button) {
-            button.addEventListener('click', function() {
-                var userData = this.parentNode.getAttribute('data-user'); // JSON 형태의 데이터
-                var user = JSON.parse(userData);
-                // JavaScript로 데이터 설정
-                document.getElementById("userId").value = user.userId;
-                document.getElementById("userPwd").value = user.userPwd;
-                document.getElementById("userEmail").value = user.userEmail;
-                document.getElementById("department").value = user.department;
-                document.getElementById("svnId").value = user.svnId;
+        document.querySelectorAll('tr[data-toggle="modal"]').forEach(function (element) {
+            element.addEventListener('click', function () {
+                var userData = $(this).children(); // JSON 형태의 데이터
+                // var user = JSON.parse(userData);
+                // JavaScript로 데이터 설정td.eq(0).text()
+                console.log("하이" + userData.eq(0).text());
+                document.getElementById("userId").value = userData.eq(0).text();
+                document.getElementById("userPwd").value = userData.eq(1).text();
+                document.getElementById("userEmail").value = userData.eq(2).text();
+                document.getElementById("department").value = userData.eq(4).text();
+                document.getElementById("svnId").value = userData.eq(3).text();
 
-                modal.style.display = "block";
+                // 모달 창을 열기
+                $("#userEditModal").modal("show");
             });
         });
+
 
         // 모달 닫기
         document.addEventListener("click", function (e) {
