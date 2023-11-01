@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org" xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{layouts/default}"> <!--thymeleaf 적용-->
+<head>
+    <meta charset="UTF-8">
+    <title>admin-page</title>
+    <link rel="stylesheet"  th:href="@{/css/styles.css}">
+    <meta charset="utf-8">
+    <!--bootstrap 적용-->
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.6.4/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
+
+</head>
+<body>
+<div class="User Edit Modal" style="position:absolute; visibility:hidden;">
+    <div class="title">
+        <h3>User Edit</h3>
+    </div>
+    <div id="LogS_wrap">
+        <div class="LogS_area area" style="height:460px">
+            <div class="LogS_top">
+                <h3 class="LogS_tit" style="font-weight: bolder;">Log Server Info</h3>
+                <div class="btn_area">
+<!--                    <button class="blue" onclick="applyLogServerInfo()" >Apply</button>-->
+                    <button class="blue">Apply</button>
+                </div>
+            </div>
+            <div class="table_area" style="height: 160px; margin-top: 7px;">
+                <label for="userId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 11px; margin-right: 5px;'>ID</label>
+                <input type="text"  	id = "userId" disabled  style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                <label for="userPwd" class="input_label" style='display:inline-block; width:100px; text-align:right;margin-right: 5px;'>password</label>
+                <input type="text"  	id = "userPwd" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                <label for="userEmail" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>E-Mail</label>
+                <input type="text"  	id = "userEmail" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                <label for="department" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-right: 5px;'>부서</label>
+                <input type="text"  	id = "department" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                <label for="svnId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>SVN ID</label>
+                <input type="text"  	id = "svnId" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>

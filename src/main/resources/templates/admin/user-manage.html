@@ -29,26 +29,26 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="user : ${userList}">
-            <td th:text="${user.userId}"></td>
+        <tr th:each="user : ${userList}" data-users="[(${user})]" data-toggle="modal" data-target="#myModal">
+            <td th:text="${user.userId}" ></td>
             <td th:text="${user.userName}"></td>
             <td th:text="${user.userEmail}"></td>
             <td th:text="${user.department}"></td>
             <td th:style="${user.status == 'N'} ? 'color: red;' : 'color: green;'">
-                <span th:text="${user.status}"></span>
+                <span th:text="${user.status}" data-users="[(${user})]" data-toggle="modal" data-target="#myModal"></span>
             </td>
             <!-- 승인 상태가 "N"인 경우에만 승인 버튼을 추가합니다 -->
             <td th:if="${user.status == 'N'}">
                 <div class="button-container" style="display: block;">
                     <!--승인-->
-                    <form th:action="@{/admin/approve-user}" th:object="${user}" method="post">
+                    <form th:action="@{/admin/approve-user}" th:object="${user}" method="post" style="float:left; margin: 2px;">
                         <input type="hidden" th:name="userNo" th:value="${user.userNo}" />
                         <button style="background-color: lawngreen; color: black;" type="submit"
                                 class="approve-button" th:user-name="${user.userName}" th:do-action="approve"
                                 onclick="return confirmAction(this.getAttribute('do-action'), this.getAttribute('user-name'))">승인</button>
                     </form>
                     <!--거절-->
-                    <form th:action="@{/admin/delete-user}" th:object="${user}" method="post">
+                    <form th:action="@{/admin/delete-user}" th:object="${user}" method="post" style="float:left; margin: 2px;">
                         <input type="hidden" th:name="userNo" th:value="${user.userNo}" />
                         <button style="background-color: red; color: black;" type="submit"
                                 class="reject-button"  th:user-name="${user.userName}" th:do-action="delete"
@@ -60,21 +60,44 @@
         </tbody>
     </table>
 
-    <nav style="text-align: center;">
+    <nav style="text-align: center; ">
         <ul class="pagination" style="display: inline-block;">
-            <li th:if="${userList.hasPrevious()}">
-                <a th:href="@{'/admin?page=' + ${userList.previousPageable.pageNumber}}"><<</a>
+            <li th:if="${userList.hasPrevious()}" style="float: left;" >
+                <a th:href="@{'/admin?page=' + ${userList.previousPageable.pageNumber}}"><<     </a>
             </li>
-            <li th:each="page : ${userList.pageable.pageNumber}" th:class="${page == userList.number} ? 'active' : ''">
+            <li th:each="page : ${userList.pageable.pageNumber}" th:class="${page == userList.number} ? 'active' : ''" style="float: left;" >
                 <a th:if="${page == userList.number}" th:text="${page + 1}"></a>
                 <a th:unless="${page == userList.number}" th:href="@{'/admin?page=' + ${page}}" th:text="${page + 1}"></a>
             </li>
-            <li th:if="${userList.hasNext()}">
-                <a th:href="@{'/admin?page=' + ${userList.nextPageable.pageNumber}}">>></a>
+            <li th:if="${userList.hasNext()}" style="float: left;" >
+                <a th:href="@{'/admin?page=' + ${userList.nextPageable.pageNumber}}">     >></a>
             </li>
         </ul>
     </nav>
 
+    <div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content" >
+                <div class="modal-body" style="text-align:center">
+                    <div class="table_area" style="height: 300px; margin-top: 10px; width: 300px;">
+                        <label for="userId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 11px; margin-right: 5px;'>ID</label>
+                        <input type="text"  	id = "userId" disabled  style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                        <label for="userPwd" class="input_label" style='display:inline-block; width:100px; text-align:right;margin-right: 5px;'>password</label>
+                        <input type="text"  	id = "userPwd" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                        <label for="userEmail" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>E-Mail</label>
+                        <input type="text"  	id = "userEmail" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/>
+                        <label for="department" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-right: 5px;'>부서</label>
+                        <input type="text"  	id = "department" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                        <label for="svnId" class="input_label" style='display:inline-block; width:100px; text-align:right; margin-top: 7px; margin-right: 5px;'>SVN ID</label>
+                        <input type="text"  	id = "svnId" style="width: 140px; font-size: small; padding-left: 5px; height: 22px;"/><br/>
+                        <div class="button-container" style="display: block; margin:auto; text-align:center;">
+                            <button class="save-button" style="background-color: dodgerblue; ">save</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
 
 
@@ -83,12 +106,6 @@
 <th:block layout:fragment="script">
     <script th:inline="javascript">
         var result=[[${result}]];//model로 전달 된 result 바인딩
-        function confirmAction(action, name) {
-            // var userName = "${user.userName}";
-            console.log(action + name);
-            var confirmationMessage = (action === 'delete') ? "유저 승인을 거절하시겠습니까?\n확인을 누르면 해당 유저는 삭제됩니다." : "유저를 승인하시겠습니까?";
-            return confirm("\"" + name + "\"" + confirmationMessage);
-        }
 
         if (result != null) { //model로 전달 된 result값 받아서 alert 창에 띄움
             alert(result);
@@ -96,6 +113,37 @@
         {
             console.log('result값이 NULL 입니다.');
         }
+
+        function confirmAction(action, name) {
+            // var userName = "${user.userName}";
+            console.log(action + name);
+            var confirmationMessage = (action === 'delete') ? "유저 승인을 거절하시겠습니까?\n확인을 누르면 해당 유저는 삭제됩니다." : "유저를 승인하시겠습니까?";
+            return confirm("\"" + name + "\"" + confirmationMessage);
+        }
+
+        // 모달 열기
+        document.querySelectorAll('.open-modal-button').forEach(function(button) {
+            button.addEventListener('click', function() {
+                var userData = this.parentNode.getAttribute('data-user'); // JSON 형태의 데이터
+                var user = JSON.parse(userData);
+                // JavaScript로 데이터 설정
+                document.getElementById("userId").value = user.userId;
+                document.getElementById("userPwd").value = user.userPwd;
+                document.getElementById("userEmail").value = user.userEmail;
+                document.getElementById("department").value = user.department;
+                document.getElementById("svnId").value = user.svnId;
+
+                modal.style.display = "block";
+            });
+        });
+
+        // 모달 닫기
+        document.addEventListener("click", function (e) {
+            if (e.target.classList.contains("close")) {
+                var modal = e.target.closest(".modal");
+                modal.style.display = "none";
+            }
+        });
     </script>
 </th:block>
 </html>
