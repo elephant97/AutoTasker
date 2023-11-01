@@ -52,6 +52,12 @@ public class AdminManageController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/edit-user")
+    public String editUser(@RequestParam("userNo") Long userNo, Model model)
+    {
+        return "admin/edit-user";
+    }
+
     @GetMapping(value ="/user-join")
     public String AdminRequestUserJoin(Model model)
     {
