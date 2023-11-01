@@ -23,7 +23,7 @@ public class AdminManageController {
     @Autowired
     private UserManageService userManageService;
 
-    @GetMapping
+    @RequestMapping
     public String AdminGetUserList(@RequestParam(name = "page", defaultValue = "0") int page, Model model)
     {
         int pageSize = 5; // 한 페이지에 표시할 항목 수
@@ -36,20 +36,20 @@ public class AdminManageController {
     }
 
     @PostMapping("/approve-user")
-    public ResponseEntity<String> approveUser(@RequestParam("userNo") Long userNo)
-//    public String approveUser(@RequestParam("userNo") Long userNo)
+    public String approveUser(@RequestParam("userNo") Long userNo ,Model model)
     {
-        ResponseEntity<String> response = userManageService.approveUser(userNo);
-//        return "redirect:/admin";
-        return response;
+        String result = userManageService.approveUser(userNo);
+        model.addAttribute("result", result);
+        System.out.println(result);
+        return "redirect:/admin";
     }
 
     @PostMapping("/delete-user")
-    public ResponseEntity<String> deleteUser(@RequestParam("userNo") Long userNo)
+    public String deleteUser(@RequestParam("userNo") Long userNo, Model model)
     {
-        ResponseEntity<String> response = userManageService.deleteUser(userNo);
-//        return "redirect:/";
-        return response;
+        String result = userManageService.deleteUser(userNo);
+        model.addAttribute("result", result);
+        return "redirect:/admin";
     }
 
     @GetMapping(value ="/user-join")
