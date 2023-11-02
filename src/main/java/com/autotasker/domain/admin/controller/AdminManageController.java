@@ -1,5 +1,6 @@
 package com.autotasker.domain.admin.controller;
 
+import com.autotasker.domain.admin.model.DTO.Form.UserJoinFormDto;
 import com.autotasker.domain.admin.model.DTO.Form.UserListRequestFormDto;
 import com.autotasker.domain.admin.model.DTO.UserListDTO;
 import com.autotasker.domain.admin.repositories.UserListRepository;
@@ -10,6 +11,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,6 +26,12 @@ public class AdminManageController {
     UserListRepository userListRepository;
     @Autowired
     private UserManageService userManageService;
+
+    private final PasswordEncoder passwordEncoder;
+
+    public AdminManageController(PasswordEncoder passwordEncoder) {
+        this.passwordEncoder = passwordEncoder;
+    }
 
     @RequestMapping
     public String AdminGetUserList(@RequestParam(name = "page", defaultValue = "0") int page, Model model,Model map)
@@ -76,7 +84,14 @@ public class AdminManageController {
     @GetMapping(value ="/user-join")
     public String AdminRequestUserJoin(Model model)
     {
+        model.addAttribute("UserJoinFormDto", new UserJoinFormDto());
         return "admin/user-join";
     }
-
+    @PostMapping(value ="/user-join")
+    public String AdminRequestUserJoin(UserJoinFormDto userJoinFormDto)
+    {
+        UserListDTO user = UserListDTO.createUser(userJoinFormDto, passwordEncoder);
+        userManageService.saveUser(user);
+        return "redirect:/";
+    }
 }

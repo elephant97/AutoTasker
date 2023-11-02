@@ -12,5 +12,5 @@ import java.util.Optional;
 public interface UserListRepository extends CrudRepository<UserListDTO, Long> {
     Page<UserListDTO> findAll(Pageable pageable);
     Optional<UserListDTO> findById(Long userId);
-
+    UserListDTO findByUserId(String userId);
 }
