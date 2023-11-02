@@ -79,4 +79,16 @@ public class UserManageService {
             return "사용자를 찾을 수 없습니다.";
         }
     }
+
+    public UserListDTO saveUser(UserListDTO user) {
+        validateDuplicateUser(user);
+        return userListRepository.save(user);
+    }
+
+    public void validateDuplicateUser(UserListDTO user) {
+        UserListDTO findUser = userListRepository.findByUserId(user.getUserId());
+        if (findUser != null) {
+            throw new IllegalStateException("이미 가입된 회원입니다.");
+        }
+    }
 }

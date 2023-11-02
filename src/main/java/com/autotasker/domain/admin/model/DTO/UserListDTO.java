@@ -1,6 +1,8 @@
 package com.autotasker.domain.admin.model.DTO;
 
+import com.autotasker.domain.admin.model.DTO.Form.UserJoinFormDto;
 import jakarta.persistence.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
 @Table(name="user_list")
@@ -82,5 +84,18 @@ public class UserListDTO {
 
     public void setStatus(String status) {
         this.status = status;
+    }
+
+    public static UserListDTO createUser(UserJoinFormDto userJoinFormDto, PasswordEncoder passwordEncoder) {
+        UserListDTO user = new UserListDTO();
+        user.setUserId(userJoinFormDto.getUserId());
+        String password = passwordEncoder.encode(userJoinFormDto.getUserPwd());
+        user.setUserPwd(password);
+        user.setUserName(userJoinFormDto.getUserName());
+        user.setUserEmail(userJoinFormDto.getUserEmail());
+        user.setSvnId(userJoinFormDto.getSvnId());
+        user.setDepartment(userJoinFormDto.getDepartment());
+
+        return user;
     }
 }
