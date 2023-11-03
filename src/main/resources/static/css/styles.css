@@ -1,4 +1,4 @@
-.approve-button, .reject-button {
+.button-container {
     /*flex: 1;*/
     margin: 2px;
     float: left;

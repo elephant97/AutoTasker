@@ -47,38 +47,40 @@ public class AdminManageController {
     }
 
     @PostMapping("/approve-user")
-    public String approveUser(@RequestParam("userNo") Long userNo ,Model model)
+    @ResponseBody
+    public String approveUser(@RequestParam("userNo") Long userNo)
     {
+        System.out.println("@@@@@"+userNo);
         String result = userManageService.approveUser(userNo);
-        model.addAttribute("resultMessage", result);
-
-        return "redirect:/admin";
+        return result;
     }
 
     @PostMapping("/delete-user")
+    @ResponseBody
     public String deleteUser(@RequestParam("userNo") Long userNo, Model model)
     {
-        model.addAttribute("resultMessage", userManageService.deleteUser(userNo));
-        return "redirect:/admin";
+        String result =userManageService.deleteUser(userNo);
+        return result;
     }
 
     @PostMapping("/edit-user")
+    @ResponseBody
     public String EditUserData(@RequestParam("userNo") Long userNo, @Valid @ModelAttribute("userListRequestFormDto") UserListRequestFormDto userListRequestFormDto, BindingResult bindingResult, Model model)
     {
         System.out.println(userListRequestFormDto);
         System.out.println(userNo);
         if(bindingResult.hasErrors()){
-            return "admin/user-manage";
+            return "에러가 발생했습니다";
         }
         try {
             String resultMessage =  userManageService.editUserInfo(userNo,userListRequestFormDto);
             System.out.println(resultMessage);
             model.addAttribute("resultMessage", resultMessage);
+            return resultMessage;
         }catch (IllegalStateException e){
             model.addAttribute("errorMessage", e.getMessage());
-            return "admin/user-manage";
+            return e.getMessage();
         }
-        return "admin/user-manage";
     }
 
     @GetMapping(value ="/user-join")
