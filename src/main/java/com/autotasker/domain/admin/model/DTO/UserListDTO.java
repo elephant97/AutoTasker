@@ -2,9 +2,12 @@ package com.autotasker.domain.admin.model.DTO;
 
 import com.autotasker.domain.admin.model.DTO.Form.UserJoinFormDto;
 import jakarta.persistence.*;
+import lombok.Builder;
+import lombok.NoArgsConstructor;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 @Entity
+@NoArgsConstructor
 @Table(name="user_list")
 public class UserListDTO {
     /**
@@ -12,6 +15,7 @@ public class UserListDTO {
      * */
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "user_no")
     private Long userNo;
     private String userId;
     private String userPwd;
@@ -83,6 +87,18 @@ public class UserListDTO {
     }
 
     public void setStatus(String status) {
+        this.status = status;
+    }
+
+    @Builder
+    public UserListDTO(Long userNo, String userId, String userPwd, String userName, String userEmail, String svnId, String department, String status) {
+        this.userNo = userNo;
+        this.userId = userId;
+        this.userPwd = userPwd;
+        this.userName = userName;
+        this.userEmail = userEmail;
+        this.svnId = svnId;
+        this.department = department;
         this.status = status;
     }
 

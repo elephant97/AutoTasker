@@ -89,8 +89,9 @@ public class AdminManageController {
         model.addAttribute("UserJoinFormDto", new UserJoinFormDto());
         return "admin/user-join";
     }
+
     @PostMapping(value ="/user-join")
-    public String AdminRequestUserJoin(UserJoinFormDto userJoinFormDto)
+    public String AdminRequestUserJoin(@ModelAttribute("UserJoinFormDto") UserJoinFormDto userJoinFormDto)
     {
         UserListDTO user = UserListDTO.createUser(userJoinFormDto, passwordEncoder);
         userManageService.saveUser(user);

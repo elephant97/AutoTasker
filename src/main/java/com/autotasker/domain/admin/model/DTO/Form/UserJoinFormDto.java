@@ -5,17 +5,13 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 
-@Setter
+
 @Getter
+@Data
 public class UserJoinFormDto {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "userNo")
-    private Long userNo;
     private String userId;
     private String userPwd;
     private String userName;
@@ -50,4 +46,30 @@ public class UserJoinFormDto {
     public String getDepartment() {
         return department;
     }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public void setUserPwd(String userPwd) {
+        this.userPwd = userPwd;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
+
+    public void setUserEmail(String userEmail) {
+        this.userEmail = userEmail;
+    }
+
+    public void setSvnId(String svnId) {
+        this.svnId = svnId;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+
+
 }

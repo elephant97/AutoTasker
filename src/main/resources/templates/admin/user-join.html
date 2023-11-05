@@ -27,11 +27,12 @@
     <div class="row g-5">
       <div class="col-md-7 col-lg-8">
         <h4 class="mb-3">Billing address</h4>
+
         <form class="needs-validation" th:action="@{/admin/user-join}" th:object="${UserJoinFormDto}" method="post">
           <div class="row g-3">
             <div class="col-sm-6">
               <label th:for="userId" class="form-label">ID</label>
-              <input type="text" class="form-control" th:filed="*{userId}" placeholder="" value="" required>
+              <input type="text" class="form-control" th:field="*{userId}" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid user ID is required.
               </div>
@@ -39,7 +40,7 @@
 
             <div class="col-sm-6">
               <label th:for="userPwd" class="form-label">Password</label>
-              <input type="text" class="form-control" th:filed="*{userPwd}" placeholder="" value="" required>
+              <input type="text" class="form-control" th:field="*{userPwd}" placeholder="" value="" required>
               <div class="invalid-feedback">
                 Valid Password is required.
               </div>
@@ -55,7 +56,7 @@
 
             <div class="col-12">
               <label th:for="userEmail" class="form-label">E-mail <span class="text-body-secondary">(Optional)</span></label>
-              <input type="email" class="form-control" th:filed="*{userEmail}" placeholder="you@example.com">
+              <input type="email" class="form-control" th:field="*{userEmail}" placeholder="you@example.com">
               <div class="invalid-feedback">
                 Please enter a valid email address for shipping updates.
               </div>
@@ -63,7 +64,7 @@
 
             <div class="col-12">
               <label th:for="svnID" class="form-label">SVN ID</label>
-              <input type="text" class="form-control" th:filed="*{svnId}" placeholder="1234 Main St" required>
+              <input type="text" class="form-control" th:field="*{svnId}" placeholder="1234 Main St" required>
               <div class="invalid-feedback">
                 Your SVN ID is required.
               </div>
@@ -71,7 +72,7 @@
 
             <div class="col-12">
               <label th:for="department" class="form-label"> Department <span class="text-body-secondary">(Optional)</span></label>
-              <input type="text" class="form-control" th:filed="*{department}" placeholder="Apartment or suite">
+              <input type="text" class="form-control" th:field="*{department}" placeholder="Apartment or suite">
             </div>
 
             <button class="w-100 btn btn-primary btn-lg" type="submit">완료</button>
